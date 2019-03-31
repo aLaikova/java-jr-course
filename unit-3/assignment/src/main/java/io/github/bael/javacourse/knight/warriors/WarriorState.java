@@ -82,7 +82,7 @@ public class WarriorState implements ActorState {
 
         System.out.println("taking damage " + damage);
         // todo - исправить расчет урона
-        int mutatedHp = hp - damage;
+        int mutatedHp = hp - Math.min(hp, Math.max(0, damage));
 
         return new WarriorState(this.attackLvl, this.defenceLvl, mutatedHp, this.level, this.strength, this.maxHP);
     }
