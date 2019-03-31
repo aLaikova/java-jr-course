@@ -1,6 +1,7 @@
 package io.github.bael.javacourse.knight;
 
 import io.github.bael.javacourse.knight.chances.BadLuckChance;
+import io.github.bael.javacourse.knight.chances.LuckyChance;
 import io.github.bael.javacourse.knight.warriors.BlackKnight;
 import io.github.bael.javacourse.knight.warriors.Knight;
 import io.github.bael.javacourse.knight.warriors.WarriorState;
@@ -31,6 +32,34 @@ public class BlackKnightTest {
 
         // проверяем что код выполняет условия спецификации\ теста
         Assert.assertEquals(1000, blackKnight.getState().getHP());
+
+
+    }
+
+    @Test //проверка НЕполучения критического урона
+    public void testNoCriticalDamage() {
+        WarriorState blackKnightState = WarriorState.builder().attackLevel(100)
+                .defenceLevel(200).hp(1000).maxHP(1000).strength(100).level(1).build();
+
+        WarriorState whiteKnightState = WarriorState.builder().attackLevel(100)
+                .defenceLevel(100).hp(1000).maxHP(1000).strength(100).level(1).build();
+
+        WarriorState knightState = WarriorState.builder().attackLevel(100)
+                .defenceLevel(100).hp(1000).maxHP(1000).strength(100).level(1).build();
+
+        Knight knight = new Knight(whiteKnightState);
+        BlackKnight blackKnight = new BlackKnight(blackKnightState);
+        Knight otherKnight = new Knight(knightState);
+
+        LuckyChance chance = new LuckyChance();
+
+        knight.attackEnemy(chance, blackKnight);
+
+        Assert.assertEquals(900, blackKnight.getState().getHP());//обычный урон по черному рыцарю
+
+        knight.attackEnemy(chance, otherKnight);
+
+        Assert.assertEquals(700, otherKnight.getState().getHP());//утроенный (критический) урон по обычному рыцарю
 
 
     }
